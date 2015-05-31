@@ -146,11 +146,58 @@ typedef NS_ENUM(NSInteger, PagerControlState) {
 
 #pragma mark - ScrollViewDelegate
 //컬렉션뷰 델리게이트 중에 있는 스크롤관련 델리게이트.
+
+
+/*
+
 -(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
     //스크롤 시작한 위치를 저장해둔다.
     self.scrollBeginOffset = scrollView.contentOffset.x;
     self.pagerControlState = PagerControlStateStayCurrent;
 }
+
+
+
+
+*/
+
+
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
+    //스크롤 시작한 위치를 저장해둔다.
+    self.scrollBeginOffset = scrollView.contentOffset.x;
+    self.pagerControlState = PagerControlStateStayCurrent;
+    
+    
+    /*
+    
+  
+    With the following lines you can change the view in your UIViewcontroller.m programmatically (after buttonclick or something else)
+    
+    int current_view_pager_cell = 2;
+        [self.ViewPager scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:current_view_pager_cell inSection:0]
+                               atScrollPosition:UICollectionViewScrollPositionNone
+                                       animated:YES];
+                                       
+                                       
+      The problem is that this method dont change  self.selectedPageNum  to the current viewpage.
+      Because of that i added the next lines of code for getting the current viewpage for preventing strange behaviour on switching views by performing a swipe gesture.
+    
+    
+    */
+    
+    
+    
+    CGRect screenBound = [[UIScreen mainScreen] bounds];
+    CGSize screenSize = screenBound.size;
+    CGFloat screenWidth = screenSize.width;
+
+    self.selectedPageNum = (int)(self.scrollBeginOffset/screenWidth);
+    
+    
+    
+}
+
+
 
 
 -(void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset{
